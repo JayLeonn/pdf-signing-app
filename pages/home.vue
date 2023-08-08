@@ -1,20 +1,22 @@
 <template>
   <div class="p-8">
-    <Button color="bg-blue-500">
+    <Button color="bg-cyan-600">
       <NuxtLink to="/">Back</NuxtLink>
     </Button>
 
-    <Button @click="fetchDocs()" color="bg-blue-500">Fetch Docs</Button>
+    <Button @click="fetchDocs()" color="bg-cyan-600">Fetch Docs</Button>
 
+    <FileUpload />
+
+    <h1>{{ docs ? docs.length : undefined }}</h1>
     <pre>{{ JSON.stringify(docs, null, 2) }}</pre>
   </div>
 </template>
 
 <script setup>
-import Button from "../components/button.vue";
 import { docueClient } from "../clients/docue";
 
-const docs = ref([]);
+const docs = ref(undefined);
 
 const fetchDocs = async () => {
   try {

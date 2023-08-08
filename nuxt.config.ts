@@ -1,7 +1,10 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  css: ["~/assets/tailwind.css"],
+  css: [
+    "~/assets/tailwind.css",
+    "@fortawesome/fontawesome-svg-core/styles.css",
+  ],
   postcss: {
     plugins: {
       tailwindcss: {},
@@ -9,8 +12,8 @@ export default defineNuxtConfig({
     },
   },
   routeRules: {
-    '/api/**': {
-      proxy: { to: "https://api.docue.com/public/**"}
-    }
-  }
+    "/api/**": {
+      proxy: { to: "https://api.docue.com/public/**" },
+    },
+  },
 });

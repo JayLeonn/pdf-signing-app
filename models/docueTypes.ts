@@ -7,36 +7,37 @@ export interface Documents {
 }
 
 export interface Document {
-  id: string;
-  templateId: string;
-  companyId: string;
-  clientId: Nullable<string>;
   name: string;
   creatorName: Nullable<string>;
   signingMethod: SigningMethod;
-  language: string;
-  stage: string;
-  createdAt: ISO8601Date;
-  updatedAt: ISO8601Date;
-  signatures: Signature[];
+  language: Language;
+  basePdf: File;
+  id?: string;
+  templateId?: string;
+  companyId?: string;
+  clientId?: Nullable<string>;
+  stage?: Stage;
+  createdAt?: ISO8601Date;
+  updatedAt?: ISO8601Date;
+  signatures?: Signature[];
 }
 
 export interface Signature {
-  id: string;
-  createdAt: ISO8601Date;
-  updatedAt: ISO8601Date;
-  state: string;
-  signedAt: Nullable<ISO8601Date>;
-  cancelledAt: Nullable<ISO8601Date>;
   firstName: string;
   lastName: string;
-  companyTitle: Nullable<string>;
-  companyIdent: Nullable<string>;
-  redirectUrl: Nullable<string>;
   type: SignatureType;
-  email: string;
-  phone: Nullable<string>;
-  invitation: Invitation;
+  id?: string;
+  createdAt?: ISO8601Date;
+  updatedAt?: ISO8601Date;
+  state?: State;
+  signedAt?: Nullable<ISO8601Date>;
+  cancelledAt?: Nullable<ISO8601Date>;
+  companyTitle?: Nullable<string>;
+  companyIdent?: Nullable<string>;
+  redirectUrl?: Nullable<string>;
+  email?: Nullable<string>;
+  phone?: Nullable<string>;
+  invitation?: Invitation;
 }
 
 export interface Invitation {
@@ -57,4 +58,21 @@ export enum SigningMethod {
 export enum SignatureType {
   Person = "person",
   Company = "company",
+}
+
+export enum Language {
+  Fi = "fi",
+  En = "en",
+  Se = "se",
+}
+
+export enum Stage {
+  Created = "created",
+  Finalized = "finalized",
+  Completed = "completed",
+}
+
+export enum State {
+  Waiting = "waiting",
+  Completed = "completed",
 }

@@ -8,7 +8,11 @@ module.exports = {
     "./nuxt.config.{js,ts}",
     "./app.vue"
   ],  theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        'sans': ['Arial', 'sans-serif'],
+      },
+    },
   },
   plugins: [],
 }

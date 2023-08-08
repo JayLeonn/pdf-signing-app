@@ -1,12 +1,10 @@
 <template>
-    <button :class="buttonClasses" @click="onClick" :disabled="disabled">
+    <button :class="buttonClasses" @click="onClick" :disabled="disabled" type="button">
       <slot></slot>
     </button>
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
-
 const props = defineProps({
   color: {
     type: String,

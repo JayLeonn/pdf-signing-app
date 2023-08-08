@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="flex flex-col justify-center mx-auto gap-5 w-1/2 p-8">
-      <Input v-model="apiToken" :apiToken="apiToken">Docue API Token</Input>
+      <Input v-model="apiToken">Docue API Token</Input>
       <Button @click="storeToken" color="bg-red-500" :disabled="isTokenEmpty"
         >Use Token</Button
       >
@@ -10,9 +10,6 @@
 </template>
 
 <script setup>
-import Button from "../components/button.vue";
-import Input from "../components/input.vue";
-
 const apiToken = ref("");
 
 const storeToken = () => {

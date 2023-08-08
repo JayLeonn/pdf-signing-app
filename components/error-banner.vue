@@ -11,8 +11,6 @@
 </template>
 
 <script setup>
-import { ref, defineProps, defineEmits } from "vue";
-
 const { message = "An error has occurred!", showInitially = true } =
   defineProps(["message", "showInitially"]);
 
