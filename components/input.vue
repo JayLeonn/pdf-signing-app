@@ -2,6 +2,7 @@
   <div class="relative flex flex-col antialiased">
     <input
       :value="modelValue"
+      :required="required"
       @input="updateValue"
       type="text"
       class="w-full min-w-0 appearance-none rounded-lg border-transparent bg-transparent leading-snug ring-1 font-normal focus:border-transparent focus:ring-1 disabled:cursor-not-allowed text-gray-600 placeholder-gray-500 disabled:placeholder-gray-400 disabled:text-gray-400 disabled:bg-gray-50 ring-gray-200 focus:ring-gray-800 focus:ring-offset-gray-800 focus:placeholder-opacity-0 form-input pt-5 pb-1 md:pt-6 md:pb-2 py-3 md:py-4 invalid:!bg-white pr-2 md:pr-3 pl-2 md:pl-3 w-64"
@@ -16,10 +17,16 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps({
+import { Nullable } from "../models/utilTypes";
+
+defineProps({
   modelValue: {
-    type: String,
+    type: String as () => Nullable<string>,
     default: "",
+  },
+  required: {
+    type: Boolean,
+    default: false,
   },
 });
 

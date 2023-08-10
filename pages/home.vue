@@ -6,7 +6,7 @@
 
     <Button @click="fetchDocs()" color="bg-cyan-600">Fetch Docs</Button>
 
-    <FileUpload />
+    <FileDrop />
 
     <h1>{{ docs ? docs.length : undefined }}</h1>
     <pre>{{ JSON.stringify(docs, null, 2) }}</pre>

@@ -1,9 +1,9 @@
 import {
-  Document,
+  DocumentData,
   Documents,
-  Language,
   Signature,
-  SigningMethod,
+  Document,
+  Language,
 } from "models/docueTypes";
 
 const baseUrl = "/api";
@@ -43,9 +43,9 @@ export const docueClient = {
   },
 
   uploadDocument: async (
-    document: Document,
+    document: DocumentData,
     signatures: Signature[]
-  ): Promise<Documents> => {
+  ): Promise<Document> => {
     const formData = new FormData();
     formData.append("document[name]", document.name);
     formData.append(
@@ -75,6 +75,33 @@ export const docueClient = {
       body: formData,
     };
 
-    return request<any>("/documents", options);
+    return request<Document>("/documents", options);
+  },
+
+  finalizeDocument: async (documentId: string): Promise<Document> => {
+    const options: RequestInit = {
+      method: "POST",
+    };
+    return request<Document>(`/documents/${documentId}/finalize`, options);
+  },
+
+  sendSignatureInvitation: async (
+    documentId: string,
+    signatureId: string,
+    language: Language
+  ): Promise<{ status: { code: number } }> => {
+    const formData = new FormData();
+    formData.append("deliveryChannel", "email");
+    formData.append("language", language);
+
+    const options: RequestInit = {
+      method: "POST",
+      body: formData,
+    };
+
+    return request<{ status: { code: number } }>(
+      `/documents/${documentId}/signatures/${signatureId}/invite`,
+      options
+    );
   },
 };

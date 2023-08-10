@@ -10,7 +10,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 const { message = "An error has occurred!", showInitially = true } =
   defineProps(["message", "showInitially"]);
 

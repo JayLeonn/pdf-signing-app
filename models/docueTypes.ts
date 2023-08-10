@@ -3,10 +3,15 @@ import { ISO8601Date } from "./utilTypes";
 
 export interface Documents {
   status: Status;
-  data: Document[];
+  data: DocumentData[];
 }
 
 export interface Document {
+  status: Status;
+  data: DocumentData;
+}
+
+export interface DocumentData {
   name: string;
   creatorName: Nullable<string>;
   signingMethod: SigningMethod;
@@ -67,9 +72,9 @@ export enum Language {
 }
 
 export enum Stage {
-  Created = "created",
-  Finalized = "finalized",
-  Completed = "completed",
+  Created = "created", // New Document
+  Finalized = "finalized", // Document is ready to be signed
+  Completed = "completed", // Document is signed
 }
 
 export enum State {

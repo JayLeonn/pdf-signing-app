@@ -4,14 +4,13 @@
       class="relative flex bg-white mx-auto m-10 w-11/12 rounded-xl shadow-lg z-50 overflow-hidden"
     >
       <div class="flex grow bg-white">
-
         <div class="flex flex-col w-3/5">
           <h2
             class="relative flex items-center justify-center border border-gray-200 p-4 !m-0 w-full"
           >
             <button
               @click="closeDialog"
-              class="flex items-center justify-center !rounded-full absolute left-4 top-3 text-gray-700 inline-flex cursor-pointer items-center justify-center gap-2 rounded-md border-0 font-medium bg-transparent text-gray-800 hover:bg-gray-800/3 hover:no-underline active:bg-gray-800/6 p-0 text-base w-8 h-8"
+              class="flex items-center justify-center !rounded-full absolute left-4 top-3 text-gray-700 inline-flex cursor-pointer items-center justify-center gap-2 rounded-md border-0 font-medium bg-transparent text-gray-800 hover:bg-gray-800/3 hover:no-underline p-0 text-base w-8 h-8"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -30,32 +29,43 @@
                 ></path>
               </svg>
             </button>
-            <h2 class="font-semibold text-gray-800 mb-0 text-base">Sign document</h2>
+            <h2 class="font-semibold text-gray-800 mb-0 text-base">
+              Sign document
+            </h2>
           </h2>
-          <div class="p-4">
-            <Input v-model="documentName">Document Name</Input>
-            <Button class="w-full my-4" color="bg-cyan-600" @click="uploadFile">Upload</Button>
+          <div class="p-5 h-full relative flex flex-col gap-8 overflow-auto">
+            <Input v-model="documentName" required>Document Name*</Input>
+            <SigningType v-model="selectedMethod" />
+            <AddSignee v-model="signees" />
+          </div>
+          <div class="p-5 border-t border-gray-200">
+            <Button
+              class="w-full"
+              color="bg-cyan-600"
+              @click="uploadFile"
+              :disabled="!isFormValid"
+              >Send File</Button
+            >
           </div>
         </div>
 
-        <iframe
-          v-if="fileUrl"
-          :src="fileUrl"
-          width="100%"
-        ></iframe>
-
+        <iframe v-if="fileUrl" :src="fileUrl" width="100%"></iframe>
       </div>
     </div>
-    <div class="fixed inset-0 z-40 bg-black opacity-50" @click="closeDialog"></div>
+    <div
+      class="fixed inset-0 z-40 bg-black opacity-50"
+      @click="closeDialog"
+    ></div>
   </div>
 </template>
 
 <script setup lang="ts">
 import {
   Language,
-  SigningMethod,
   Signature,
   SignatureType,
+  SigningMethod,
+  DocumentData,
 } from "../models/docueTypes";
 import { docueClient } from "../clients/docue";
 
@@ -75,44 +85,75 @@ const props = defineProps({
 });
 
 const documentName = ref(props.fileData?.name || "");
+const signees = ref<Signature[]>([]);
+const selectedMethod = ref<SigningMethod>(SigningMethod.Canvas);
+
+const isFormValid = computed((): boolean => {
+  if (documentName.value.trim() === "") return false;
+
+  for (const signee of signees.value) {
+    if (!signee.firstName || !signee.lastName || !signee.email) {
+      return false;
+    }
+  }
+
+  return true;
+});
+
+const uploadFile = async () => {
+  if (props.fileData) {
+    const documentData = {
+      name: documentName.value,
+      creatorName: "tech-task-nuxt3", // Placeholder
+      basePdf: props.fileData,
+      language: Language.En,
+      signingMethod: selectedMethod.value,
+    };
+    const signatures: Signature[] = signees.value.map((signee) => ({
+      firstName: signee.firstName,
+      lastName: signee.lastName,
+      type: SignatureType.Person,
+      email: signee.email,
+    }));
+
+    console.log(documentData, signatures);
+    console.log(selectedMethod.value);
+
+        try {
+      //start document upload process
+      const response = await docueClient.uploadDocument(
+        documentData,
+        signatures
+      );
+      //send document finalize request
+      if (response.data && response.data.id) {
+        const finalized = await docueClient.finalizeDocument(response.data.id);
+        if (finalized.data && finalized.data.signatures) {
+          //send signing invitations
+          for (const signature of finalized.data.signatures) {
+            if (signature.id) {
+              await docueClient.sendSignatureInvitation(
+                response.data.id,
+                signature.id,
+                Language.En
+              );
+            }
+          }
+        }
+      }
+      closeDialog();
+      console.log("Upload successful:", response);
+    } catch (error) {
+      console.error("Upload failed:", error);
+    }
+  }
+};
 
 const emit = defineEmits(["update:dialogVisible"]);
 
 const closeDialog = () => {
   console.log("close");
   emit("update:dialogVisible", false);
-};
-
-const uploadFile = async () => {
-  if (props.fileData) {
-    const documentData = {
-      name: documentName.value,
-      creatorName: "tech-task-nuxt3", //Hardcoded placeholder
-      signingMethod: SigningMethod.Canvas,
-      basePdf: props.fileData,
-      language: Language.En,
-    };
-
-    const signatures: Signature[] = [
-      {
-        firstName: "placeholderName", // TODO: Replace with signature component data
-        lastName: "placeholderLastName",
-        type: SignatureType.Person,
-      },
-    ];
-
-    console.log(documentData, signatures);
-
-    try {
-      const response = await docueClient.uploadDocument(
-        documentData,
-        signatures
-      );
-      console.log("Upload successful:", response);
-    } catch (error) {
-      console.error("Upload failed:", error);
-    }
-  }
 };
 </script>
 

@@ -30,42 +30,45 @@
   </ClientOnly>
 </template>
 
-<script setup>
-const fileInput = ref(null);
-const fileData = ref(null);
-const fileUrl = ref(null);
+<script setup lang="ts">
+import { Nullable } from "models/utilTypes";
+
+const fileInput = ref<HTMLInputElement | undefined>(undefined);
+const fileData = ref<File | undefined>(undefined);
+const fileUrl = ref<string>("");
 const dialogVisible = ref(false);
 
 const handleBrowseClick = () => {
-  fileInput.value.click();
+  fileInput.value?.click();
 };
 
-const handleFileChange = (event) => {
-  const selectedFile = event.target.files[0];
+const handleFileChange = (event: Event) => {
+  const target: Nullable<HTMLInputElement> = event.target as HTMLInputElement;
+  const selectedFile = target.files?.[0];
+  if (!selectedFile) return;
   fileData.value = selectedFile;
   const reader = new FileReader();
   reader.onload = (e) => {
-    fileUrl.value = e.target.result;
+    fileUrl.value = e.target?.result as string;
   };
   reader.readAsDataURL(selectedFile);
   dialogVisible.value = true;
 
-  event.target.value = null;
+  target.value = ""; // reset the input
 };
 
-const handleDrop = (event) => {
+const handleDrop = (event: DragEvent) => {
   event.preventDefault();
-  const selectedFile = event.dataTransfer.files[0];
+  const selectedFile = event.dataTransfer?.files[0];
   if (selectedFile && selectedFile.type === "application/pdf") {
     fileData.value = selectedFile;
     const reader = new FileReader();
     reader.onload = (e) => {
-      fileUrl.value = e.target.result;
+      fileUrl.value = e.target?.result as string;
     };
     reader.readAsDataURL(selectedFile);
     dialogVisible.value = true;
   }
-  event.target.value = null;
 };
 </script>
 
