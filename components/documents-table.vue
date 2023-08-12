@@ -2,7 +2,7 @@
   <div>
     <div class="flex justify-between">
       <h1 class="font-bold text-xl items-center mb-4">Documents</h1>
-      <Button @click="fetchDocuments()">Fetch Docs</Button>
+      <Button @click="updateDocs()">Fetch Docs</Button>
     </div>
     <table class="table-auto w-full">
       <tbody>
@@ -98,20 +98,11 @@ import {
   State,
 } from "../models/docueTypes";
 import { docueClient } from "../clients/docue";
+import { documents, updateDocs } from "../shared/sharedState";
 
-const documents = ref<DocumentData[] | undefined>(undefined);
 const dialogVisible = ref(false);
 const selectedDocument = ref<DocumentData | undefined>(undefined);
 const selectedSignature = ref<Signature | undefined>(undefined);
-
-const fetchDocuments = async () => {
-  try {
-    const response = await docueClient.fetchDocuments();
-    documents.value = response.data;
-  } catch (e) {
-    throw new Error("Failed to fetch documents");
-  }
-};
 
 const sendSignatureInvitation = async (document: DocumentData) => {
   if (!document.signatures || !document.id) return;
@@ -159,7 +150,7 @@ const signDocument = (document: DocumentData, signature: Signature) => {
 };
 
 onMounted(() => {
-  fetchDocuments();
+  updateDocs();
 });
 </script>
 

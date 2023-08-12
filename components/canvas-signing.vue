@@ -42,12 +42,12 @@
       <div class="inline-block">
         <div
           class="relative rounded-md border-2 border-gray-800"
-          style="width: 300px; height: 150px"
+          style="width: 400px; height: 150px"
         >
           <canvas
             ref="signaturePad"
             class="pad h-full w-full"
-            width="300"
+            width="400"
             height="150"
           ></canvas>
         </div>
@@ -64,7 +64,7 @@
     <footer
       class="relative -m-4 mt-4 flex items-center justify-end gap-2 border-t border-t-gray-200 p-4 md:-m-6 md:mt-4"
     >
-      <Button color="bg-white" overrideStyle="text-black" @click="closeDialog">
+      <Button color="bg-white" overrideStyle="!text-black" @click="closeDialog">
         Close
       </Button>
       <Button @click="signNow(signature?.id)"> Sign now </Button>
@@ -77,6 +77,7 @@
 </template>
 
 <script setup lang="ts">
+import { updateDocs } from "../shared/sharedState";
 import { docueClient } from "../clients/docue";
 import { Signature } from "../models/docueTypes";
 
@@ -114,6 +115,7 @@ const signNow = async (signatureId: string | undefined) => {
 
     if (signatureResponse.status.code === 200) {
       console.log("Document signed successfully");
+      updateDocs();
       closeDialog();
     }
   } catch (error) {

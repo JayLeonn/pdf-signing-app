@@ -63,6 +63,7 @@ import {
   SigningMethod,
 } from "../models/docueTypes";
 import { docueClient } from "../clients/docue";
+import { updateDocs } from "../shared/sharedState";
 
 const props = defineProps({
   dialogVisible: {
@@ -85,6 +86,7 @@ const selectedMethod = ref<SigningMethod>(SigningMethod.Canvas);
 
 const isFormValid = computed((): boolean => {
   if (documentName.value.trim() === "") return false;
+  if (signees.value.length === 0) return false;
 
   for (const signee of signees.value) {
     if (!signee.firstName || !signee.lastName || !signee.email) {
@@ -133,6 +135,7 @@ const uploadFile = async () => {
           }
         }
       }
+      updateDocs();
       closeDialog();
     } catch (error) {
       throw new Error("Error uploading document");
