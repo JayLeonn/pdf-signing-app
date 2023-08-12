@@ -104,4 +104,27 @@ export const docueClient = {
       options
     );
   },
+
+  fulfillSignature: async (
+    documentId: string,
+    signatureId: string,
+    signatureImage: File
+  ): Promise<{ status: { code: number } }> => {
+    const formData = new FormData();
+    formData.append("signature", signatureImage);
+
+    console.log(signatureImage.name); // signature.png
+    console.log(signatureImage.type); // image/png
+    console.log(signatureImage.size); // 3418
+
+    const options: RequestInit = {
+      method: "POST",
+      body: formData,
+    };
+
+    return request<{ status: { code: number } }>(
+      `/documents/${documentId}/signatures/${signatureId}/signature`,
+      options
+    );
+  },
 };

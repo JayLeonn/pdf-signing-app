@@ -10,7 +10,7 @@ const errorMsg = ref("");
 
 onErrorCaptured((error) => {
   errorMsg.value = error.message;
-  console.log(error);
+  console.error(error);
   return false; // This prevents the error from propagating further
 });
 

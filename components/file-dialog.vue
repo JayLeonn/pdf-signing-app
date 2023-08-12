@@ -39,11 +39,7 @@
             <AddSignee v-model="signees" />
           </div>
           <div class="p-5 border-t border-gray-200">
-            <Button
-              class="w-full"
-              color="bg-cyan-600"
-              @click="uploadFile"
-              :disabled="!isFormValid"
+            <Button class="w-full" @click="uploadFile" :disabled="!isFormValid"
               >Send File</Button
             >
           </div>
@@ -65,7 +61,6 @@ import {
   Signature,
   SignatureType,
   SigningMethod,
-  DocumentData,
 } from "../models/docueTypes";
 import { docueClient } from "../clients/docue";
 
@@ -119,7 +114,7 @@ const uploadFile = async () => {
     console.log(documentData, signatures);
     console.log(selectedMethod.value);
 
-        try {
+    try {
       //start document upload process
       const response = await docueClient.uploadDocument(
         documentData,
@@ -142,7 +137,6 @@ const uploadFile = async () => {
         }
       }
       closeDialog();
-      console.log("Upload successful:", response);
     } catch (error) {
       console.error("Upload failed:", error);
     }
@@ -152,7 +146,6 @@ const uploadFile = async () => {
 const emit = defineEmits(["update:dialogVisible"]);
 
 const closeDialog = () => {
-  console.log("close");
   emit("update:dialogVisible", false);
 };
 </script>

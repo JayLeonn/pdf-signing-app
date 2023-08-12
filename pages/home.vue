@@ -1,33 +1,17 @@
 <template>
-  <div class="p-8">
-    <Button color="bg-cyan-600">
-      <NuxtLink to="/">Back</NuxtLink>
-    </Button>
+  <div class="h-screen">
+    <div class="flex flex-col border-t border-gray-200 h-full">
 
-    <Button @click="fetchDocs()" color="bg-cyan-600">Fetch Docs</Button>
+      <div class="flex flex-1">
+        <FileDrop class="flex-1 px-12 py-8" />
 
-    <FileDrop />
-
-    <h1>{{ docs ? docs.length : undefined }}</h1>
-    <pre>{{ JSON.stringify(docs, null, 2) }}</pre>
+        <DocumentsTable class="flex-1 px-12 py-8 border-l border-gray-200" />
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { docueClient } from "../clients/docue";
-
-const docs = ref(undefined);
-
-const fetchDocs = async () => {
-  try {
-    const response = await docueClient.fetchDocuments();
-    docs.value = response.data;
-    console.log(docs.value);
-  } catch (e) {
-    throw new Error(e.message);
-  }
-};
-
 definePageMeta({
   middleware: "auth",
 });

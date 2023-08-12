@@ -23,8 +23,8 @@ const props = defineProps({
     type: Number,
   },
   modelValue: {
-    type: Object as () => Signature,
-    default: () => ({}),
+    type: Object as PropType<Signature>,
+    default: ({}),
   },
 });
 

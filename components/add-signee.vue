@@ -42,8 +42,9 @@ import { Signature, SignatureType } from "../models/docueTypes";
 
 const props = defineProps({
   modelValue: {
-    type: Array as () => Signature[],
-    default: () => [],
+    type: Array as PropType<Signature[]>,
+    required: true,
+    default: [],
   },
 });
 
