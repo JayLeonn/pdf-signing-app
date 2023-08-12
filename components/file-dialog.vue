@@ -111,9 +111,6 @@ const uploadFile = async () => {
       email: signee.email,
     }));
 
-    console.log(documentData, signatures);
-    console.log(selectedMethod.value);
-
     try {
       //start document upload process
       const response = await docueClient.uploadDocument(
