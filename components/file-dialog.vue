@@ -135,7 +135,7 @@ const uploadFile = async () => {
       }
       closeDialog();
     } catch (error) {
-      console.error("Upload failed:", error);
+      throw new Error("Error uploading document");
     }
   }
 };
