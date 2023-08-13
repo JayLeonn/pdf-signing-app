@@ -5,6 +5,7 @@ import {
   Document,
   Language,
 } from "models/docueTypes";
+import { isLoading } from "../shared/sharedState";
 
 const baseUrl = "/api";
 
@@ -12,6 +13,7 @@ const request = async <T>(
   endpoint: string,
   options: RequestInit = {}
 ): Promise<T> => {
+  isLoading.value = true;
   const token = sessionStorage.getItem("apiToken");
   if (!token) {
     console.error("No token found");
@@ -31,9 +33,10 @@ const request = async <T>(
   if (!response.ok) {
     const errorData = await response.json();
     console.error("Error making request:", errorData);
+    isLoading.value = false;
     throw new Error(errorData.message || "Unknown error");
   }
-
+  isLoading.value = false;
   return response.json();
 };
 
@@ -113,11 +116,11 @@ export const docueClient = {
     const formData = new FormData();
     formData.append("signature", signatureImage);
 
-    console.log('Name:', signatureImage.name); // signature.png
-    console.log('Type:', signatureImage.type); // image/png
-    console.log('Size:', signatureImage.size); // bytesize
+    console.log("Name:", signatureImage.name); // signature.png
+    console.log("Type:", signatureImage.type); // image/png
+    console.log("Size:", signatureImage.size); // bytesize
     for (const [key, value] of formData.entries()) {
-      console.log('formData:', key, value);
+      console.log("formData:", key, value);
     }
 
     const options: RequestInit = {

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="absolute z-50 top-20 translate-x-1/3 h-auto font-sans flex flex-col max-h-full mx-2 my-2 md:my-4 md:mx-4 p-4 md:p-6 rounded-xl bg-white drop-shadow-2xl overflow-hidden"
+    class="absolute z-40 top-20 translate-x-1/3 h-auto font-sans flex flex-col max-h-full mx-2 my-2 md:my-4 md:mx-4 p-4 md:p-6 rounded-xl bg-white drop-shadow-2xl overflow-hidden"
   >
     <header
       class="relative -m-4 mb-4 flex min-h-[3.5rem] items-center justify-center border-b border-b-gray-200 p-4 md:-m-6 md:mb-4"
@@ -71,7 +71,7 @@
     </footer>
   </div>
   <div
-    class="fixed inset-0 z-40 bg-black opacity-50"
+    class="fixed inset-0 z-30 bg-black opacity-50"
     @click="closeDialog"
   ></div>
 </template>

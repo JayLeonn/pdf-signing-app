@@ -1,11 +1,10 @@
-import { ref } from 'vue';
-import { DocumentData } from "../models/docueTypes"; // Adjust path as needed
-import { docueClient } from "../clients/docue"; // Adjust path as needed
+import { ref } from "vue";
+import { DocumentData } from "../models/docueTypes";
+import { docueClient } from "../clients/docue";
 
-// Reactive property to hold the documents
 export const documents = ref<DocumentData[] | undefined>(undefined);
+export const isLoading = ref(false);
 
-// Method to fetch the documents
 export const updateDocs = async () => {
   try {
     const response = await docueClient.fetchDocuments();

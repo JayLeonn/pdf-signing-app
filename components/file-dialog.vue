@@ -1,7 +1,7 @@
 <template>
-  <div class="fixed inset-0 z-50 overflow-auto bg-smoke-light flex">
+  <div class="fixed inset-0 z-40 overflow-auto bg-smoke-light flex">
     <div
-      class="relative flex bg-white mx-auto m-10 w-11/12 rounded-xl shadow-lg z-50 overflow-hidden"
+      class="relative flex bg-white mx-auto m-10 w-11/12 rounded-xl shadow-lg z-40 overflow-hidden"
     >
       <div class="flex grow bg-white">
         <div class="flex flex-col w-3/5">
@@ -49,7 +49,7 @@
       </div>
     </div>
     <div
-      class="fixed inset-0 z-40 bg-black opacity-50"
+      class="fixed inset-0 z-30 bg-black opacity-50"
       @click="closeDialog"
     ></div>
   </div>
