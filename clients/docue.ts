@@ -113,9 +113,12 @@ export const docueClient = {
     const formData = new FormData();
     formData.append("signature", signatureImage);
 
-    console.log(signatureImage.name); // signature.png
-    console.log(signatureImage.type); // image/png
-    console.log(signatureImage.size); // 3418
+    console.log('Name:', signatureImage.name); // signature.png
+    console.log('Type:', signatureImage.type); // image/png
+    console.log('Size:', signatureImage.size); // bytesize
+    for (const [key, value] of formData.entries()) {
+      console.log('formData:', key, value);
+    }
 
     const options: RequestInit = {
       method: "POST",

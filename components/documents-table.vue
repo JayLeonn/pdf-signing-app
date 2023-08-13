@@ -1,12 +1,21 @@
 <template>
   <div>
     <div class="flex justify-between">
-      <h1 class="font-bold text-xl items-center mb-4">Documents</h1>
-      <Button @click="updateDocs()">Fetch Docs</Button>
+      <h1 class="font-bold text-xl items-center mb-4">Unsigned documents</h1>
+      <ClientOnly>
+        <font-awesome-icon
+          @click="updateDocs()"
+          icon="fa-rotate"
+          class="text-l text-gray-900 rounded-full bg-gray-200 p-3 hover:bg-gray-300 hover:cursor-pointer"
+        ></font-awesome-icon>
+      </ClientOnly>
     </div>
     <table class="table-auto w-full">
       <tbody>
-        <tr v-for="document in documents" class="border-b border-gray-200">
+        <tr
+          v-for="document in filteredDocuments"
+          class="border-b border-gray-200"
+        >
           <td class="p-4">
             <font-awesome-icon
               icon="fa-file"
@@ -103,6 +112,11 @@ import { documents, updateDocs } from "../shared/sharedState";
 const dialogVisible = ref(false);
 const selectedDocument = ref<DocumentData | undefined>(undefined);
 const selectedSignature = ref<Signature | undefined>(undefined);
+const filteredDocuments = computed(() => {
+  return documents.value?.filter(
+    (document) => document.stage !== Stage.Completed
+  );
+});
 
 const sendSignatureInvitation = async (document: DocumentData) => {
   if (!document.signatures || !document.id) return;
