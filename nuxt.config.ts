@@ -14,6 +14,8 @@ export default defineNuxtConfig({
   routeRules: {
     "/api/**": {
       proxy: { to: "https://api.docue.com/public/**" },
+      cors: true,
     },
   },
+  ssr: false
 });

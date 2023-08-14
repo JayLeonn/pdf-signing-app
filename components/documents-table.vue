@@ -2,13 +2,11 @@
   <div>
     <div class="flex justify-between">
       <h1 class="font-bold text-xl items-center mb-4">Unsigned documents</h1>
-      <ClientOnly>
-        <font-awesome-icon
-          @click="updateDocs()"
-          icon="fa-rotate"
-          class="text-l text-gray-900 rounded-full bg-gray-200 p-3 hover:bg-gray-300 hover:cursor-pointer"
-        ></font-awesome-icon>
-      </ClientOnly>
+      <font-awesome-icon
+        @click="updateDocs()"
+        icon="fa-rotate"
+        class="text-l text-gray-900 rounded-full bg-gray-200 p-3 hover:bg-gray-300 hover:cursor-pointer"
+      ></font-awesome-icon>
     </div>
     <table class="table-auto w-full">
       <tbody>
