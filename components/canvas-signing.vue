@@ -1,6 +1,6 @@
 <template>
   <div
-    class="absolute z-40 top-20 translate-x-1/3 h-auto font-sans flex flex-col max-h-full mx-2 my-2 md:my-4 md:mx-4 p-4 md:p-6 rounded-xl bg-white drop-shadow-2xl overflow-hidden"
+    class="absolute z-40 top-20 md:left-1/2 md:translate-x-1/2 font-sans flex flex-col mx-2 my-2 p-4 md:p-6 rounded-xl bg-white drop-shadow-2xl overflow-hidden"
   >
     <header
       class="relative -m-4 mb-4 flex min-h-[3.5rem] items-center justify-center border-b border-b-gray-200 p-4 md:-m-6 md:mb-4"
@@ -42,12 +42,12 @@
       <div class="inline-block">
         <div
           class="relative rounded-md border-2 border-gray-800"
-          style="width: 400px; height: 150px"
+          style="width: 300px; height: 150px"
         >
           <canvas
             ref="signaturePad"
             class="pad h-full w-full"
-            width="400"
+            width="300"
             height="150"
           ></canvas>
         </div>
@@ -67,7 +67,7 @@
       <Button color="bg-white" overrideStyle="!text-black" @click="closeDialog">
         Close
       </Button>
-      <Button @click="signNow(signature?.id)"> Sign now </Button>
+      <Button @click="signNow(signature?.id)" :disabled="isCanvasEmpty"> Sign now </Button>
     </footer>
   </div>
   <div
@@ -99,6 +99,8 @@ const props = defineProps({
 
 const signaturePad = ref<HTMLCanvasElement | undefined>(undefined);
 const signedImageURL = ref<string | undefined>(undefined);
+const canvasIsEmpty = ref(true);
+const isCanvasEmpty = computed(() => canvasIsEmpty.value);
 
 const signNow = async (signatureId: string | undefined) => {
   try {
@@ -106,7 +108,6 @@ const signNow = async (signatureId: string | undefined) => {
 
     if (!imageFile || !signatureId || !props.documentId) return;
 
-    // Pass the File to fulfillSignature function
     const signatureResponse = await docueClient.fulfillSignature(
       props.documentId,
       signatureId,
@@ -134,6 +135,7 @@ onMounted(() => {
 
   canvas.addEventListener("mousedown", () => {
     drawing = true;
+    canvasIsEmpty.value = false;
     context.beginPath();
   });
 
@@ -158,6 +160,7 @@ const clearCanvas = () => {
   const canvas = signaturePad.value;
   if (!canvas || !canvas.getContext("2d")) return;
   canvas.getContext("2d")!.clearRect(0, 0, canvas.width, canvas.height);
+  canvasIsEmpty.value = true;
 };
 
 const getPngImage = async (): Promise<File | undefined> => {

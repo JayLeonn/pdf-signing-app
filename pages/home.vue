@@ -1,11 +1,10 @@
 <template>
   <div class="h-screen">
     <div class="flex flex-col border-t border-gray-200 h-full">
+      <div class="flex flex-1 flex-col md:flex-row">
+        <FileDrop class="px-12 py-8 md:flex-1" />
 
-      <div class="flex flex-1">
-        <FileDrop class="flex-1 px-12 py-8" />
-
-        <DocumentsTable class="flex-1 px-12 py-8 border-l border-gray-200" />
+        <DocumentsTable class="flex-1 p-0 border-l border-gray-200 md:px-12 md:py-8" />
       </div>
     </div>
   </div>
