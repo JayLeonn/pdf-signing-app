@@ -32,8 +32,8 @@ const request = async <T>(
 
   if (!response.ok) {
     const errorData = await response.json();
-    console.error("Error making request:", errorData);
     isLoading.value = false;
+    console.error("Error making request:", errorData);
     throw new Error(errorData.message || "Unknown error");
   }
   isLoading.value = false;

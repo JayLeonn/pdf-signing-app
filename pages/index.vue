@@ -10,6 +10,8 @@
 </template>
 
 <script setup>
+import { isLoading } from '../shared/sharedState';
+
 const apiToken = ref("");
 const isTokenEmpty = computed(() => apiToken.value.trim() === "");
 
@@ -28,6 +30,7 @@ onMounted(() => {
   if (token) {
     apiToken.value = token;
   }
+  isLoading.value = false;
 });
 </script>
 
